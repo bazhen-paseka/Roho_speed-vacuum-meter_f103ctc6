@@ -27,6 +27,8 @@
 	#include <stdio.h>
 	#include <string.h>
 
+	#include "tm1637_sm.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -112,6 +114,29 @@ int main(void)
 
 	int counter_i = 0;
 
+
+	tm1637_struct h1_tm1637;
+	  h1_tm1637.clk_pin = GPIO_PIN_8;
+	  h1_tm1637.clk_port = GPIOB;
+	  h1_tm1637.dio_pin = GPIO_PIN_9;
+	  h1_tm1637.dio_port = GPIOB;
+		__HAL_RCC_GPIOB_CLK_ENABLE();
+
+	tm1637_struct h2_tm1637;
+	  h2_tm1637.clk_pin = GPIO_PIN_6;
+	  h2_tm1637.clk_port = GPIOB;
+	  h2_tm1637.dio_pin = GPIO_PIN_7;
+	  h2_tm1637.dio_port = GPIOB;
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+
+	  tm1637_Init(&h1_tm1637);
+	  tm1637_Init(&h2_tm1637);
+
+	  tm1637_Set_Brightness(  &h1_tm1637, bright_45percent);
+	  tm1637_Display_Decimal( &h1_tm1637, 1235, 0);
+	  tm1637_Set_Brightness(  &h2_tm1637, bright_45percent);
+	  tm1637_Display_Decimal( &h2_tm1637, 6789, 0);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -125,6 +150,8 @@ int main(void)
 	sprintf(DataChar,"%d\r\n" , counter_i) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 	counter_i++;
+	tm1637_Display_Decimal(&h1_tm1637, counter_i, 0);
+	tm1637_Display_Decimal(&h2_tm1637, 1000+counter_i, 0);
 
     /* USER CODE END WHILE */
 
