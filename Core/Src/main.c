@@ -30,6 +30,7 @@
 	#include <string.h>
 
 	#include "tm1637_sm.h"
+	#include "adc_light_stm32f103_hal_sm.h"
 
 /* USER CODE END Includes */
 
@@ -146,6 +147,8 @@ int main(void)
 		//HAL_TIM_Base_Start(&htim3);
 		HAL_TIM_Base_Start_IT(&htim3);
 
+		//	speedometr 6im/oborot
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -156,11 +159,13 @@ int main(void)
 //	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 	HAL_Delay(500);
 //	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-	sprintf(DataChar,"%d\r\n" , counter_i) ;
-	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
+
 	counter_i++;
-	tm1637_Display_Decimal(&h1_tm1637, counter_i, 0);
+	uint32_t adc_u32 = ADC1_GetValue( &hadc1, ADC_CHANNEL_1 );
+	tm1637_Display_Decimal(&h1_tm1637, adc_u32, 0);
 	tm1637_Display_Decimal(&h2_tm1637, tim3_cnt_u32, 0);
+	sprintf(DataChar,"%04d\ttim:%04d\tadc:%04d\r\n" , counter_i, (int)tim3_cnt_u32, (int)adc_u32) ;
+	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 
     /* USER CODE END WHILE */
 
