@@ -24,6 +24,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+	#include <stdio.h>
+	#include <string.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -88,16 +91,41 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
+	#define SOFT_VERSION 			100
+	char DataChar[0xFF];
+	int soft_version_arr_int[3];
+	soft_version_arr_int[0] = ((SOFT_VERSION) / 100)     ;
+	soft_version_arr_int[1] = ((SOFT_VERSION) /  10) %10 ;
+	soft_version_arr_int[2] = ((SOFT_VERSION)      ) %10 ;
+
+	sprintf(DataChar,"\r\n\r\n ROHO speed and vacuum meter v%d.%d.%d \r\nUART1 for debug on speed 115200 \r\n",
+			soft_version_arr_int[0] ,
+			soft_version_arr_int[1] ,
+			soft_version_arr_int[2] ) ;
+	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+	#define 	DATE_as_int_str 	(__DATE__)
+	#define 	TIME_as_int_str 	(__TIME__)
+	sprintf(DataChar,"Build: %s. Time: %s.\r\n" ,
+			DATE_as_int_str ,
+			TIME_as_int_str ) ;
+	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
+
+	int counter_i = 0;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_Delay(100);
-	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-	  HAL_Delay(500);
-	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	HAL_Delay(100);
+	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	HAL_Delay(500);
+	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	sprintf(DataChar,"%d\r\n" , counter_i) ;
+	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
+	counter_i++;
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
