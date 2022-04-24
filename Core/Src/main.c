@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -91,6 +92,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
 	#define SOFT_VERSION 			100
@@ -137,16 +139,19 @@ int main(void)
 	  tm1637_Set_Brightness(  &h2_tm1637, bright_45percent);
 	  tm1637_Display_Decimal( &h2_tm1637, 6789, 0);
 
+		//HAL_TIM_Base_Start(&htim3);
+		HAL_TIM_Base_Start_IT(&htim3);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	HAL_Delay(100);
-	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+//	HAL_Delay(100);
+//	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 	HAL_Delay(500);
-	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+//	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 	sprintf(DataChar,"%d\r\n" , counter_i) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 	counter_i++;
