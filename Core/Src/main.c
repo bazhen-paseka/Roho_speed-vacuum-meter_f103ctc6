@@ -33,7 +33,7 @@
 	#include "adc_light_stm32f103_hal_sm.h"
 	#include "max7219_digit.h"
 	#include "Roho_speed_vacuum_local_config.h"
-	#include "ADC_local_config.h"
+
 
 /* USER CODE END Includes */
 
@@ -136,7 +136,6 @@ int main(void)
 
 	//HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
-	//	speedometr 6im/oborot
 
   /* USER CODE END 2 */
 
