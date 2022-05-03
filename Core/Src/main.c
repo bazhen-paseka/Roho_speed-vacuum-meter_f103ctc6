@@ -132,7 +132,7 @@ int main(void)
 	};
 
 	max7219_init( &h1_max7219 ) ;
-	max7219_print_value( &h1_max7219, 1426, 1 );
+	max7219_print_value( &h1_max7219, 20221431, 1 );
 
 	//HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
