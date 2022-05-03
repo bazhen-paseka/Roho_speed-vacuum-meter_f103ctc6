@@ -4,3 +4,6 @@
 [submodule "Drivers/adc_light_stm32f103_hal_sm"]
 	path = Drivers/adc_light_stm32f103_hal_sm
 	url = git@github.com:bazhen-paseka/adc_light_stm32f103_hal_sm.git
+[submodule "Drivers/max7219_sm"]
+	path = Drivers/max7219_sm
+	url = git@github.com:bazhen-paseka/max7219_sm.git
