@@ -62,8 +62,6 @@ void Error_Handler(void);
 #define HALL_SENSOR_Pin GPIO_PIN_2
 #define HALL_SENSOR_GPIO_Port GPIOA
 #define HALL_SENSOR_EXTI_IRQn EXTI2_IRQn
-#define SPI2_CS_Pin GPIO_PIN_3
-#define SPI2_CS_GPIO_Port GPIOA
 #define SPI1_CS_Pin GPIO_PIN_4
 #define SPI1_CS_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */

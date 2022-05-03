@@ -130,19 +130,12 @@ int main(void)
 		.cs_pin		= SPI1_CS_Pin
 	};
 
-//	max7219_struct h2_max7219 =
-//	{
-//		.spi		= &hspi1,
-//		.cs_port	= SPI2_CS_GPIO_Port,
-//		.cs_pin		= SPI2_CS_Pin
-//	};
-	max7219_init2( &h1_max7219, DecodeForDigit_7_0, Intensity_13, DisplayDigit_0_7, NormalOperation);
-	max7219_init2( &h1_max7219, DecodeForDigit_7_0, Intensity_13, DisplayDigit_0_7, NormalOperation);
+	max7219_init4( &h1_max7219, DecodeForDigit_7_0, Intensity_13, DisplayDigit_0_7, NormalOperation);
+	max7219_init4( &h1_max7219, DecodeForDigit_7_0, Intensity_13, DisplayDigit_0_7, NormalOperation);
 
-	max7219_print_value( &h1_max7219, 3344, 6789, 0 );
-	max7219_print_value( &h1_max7219, 1122, 5445, 4 );
-//	max7219_print_value( &h2_max7219, 8888, 0 );
-//	max7219_print_value( &h2_max7219, 1212, 4 );
+	max7219_print_value( &h1_max7219, 4444, 2222, 0 );
+	max7219_print_value( &h1_max7219, 3333, 1111, 4 );
+
 
 	HAL_Delay(1500);
 	//HAL_TIM_Base_Start(&htim3);
@@ -161,11 +154,9 @@ int main(void)
 	sprintf(DataChar,"%04d\ttim:%04d\tadc:%04d\r\n" , counter_i, (int)tim3_cnt_u32, (int)adc_u32) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 
-	max7219_print_value( &h1_max7219, counter_i+2000, counter_i+6000, 0 );
-	max7219_print_value( &h1_max7219, counter_i+1000, counter_i+5000, 4 );
+	max7219_print_value( &h1_max7219, counter_i+4000, counter_i+2000, 0 );
+	max7219_print_value( &h1_max7219, counter_i+3000, counter_i+1000, 4 );
 
-//	max7219_print_value( &h2_max7219, counter_i+5000, 0 );
-//	max7219_print_value( &h2_max7219, counter_i+6000, 4 );
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
