@@ -32,6 +32,8 @@
 
 	#include "adc_light_stm32f103_hal_sm.h"
 	#include "max7219_digit.h"
+	#include "Roho_speed_vacuum_local_config.h"
+	#include "ADC_local_config.h"
 
 /* USER CODE END Includes */
 
@@ -102,7 +104,6 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
-	#define SOFT_VERSION 			100
 	char DataChar[0xFF];
 	int soft_version_arr_int[3];
 	soft_version_arr_int[0] = ((SOFT_VERSION) / 100)     ;
@@ -136,8 +137,7 @@ int main(void)
 	max7219_print_value( &h1_max7219, 4444, 2222, 0 );
 	max7219_print_value( &h1_max7219, 3333, 1111, 4 );
 
-
-	HAL_Delay(1500);
+	HAL_Delay(100);
 	//HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
 	//	speedometr 6im/oborot
@@ -148,14 +148,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	HAL_Delay(1000);
+	HAL_Delay(700);
 	counter_i++;
-	uint32_t adc_u32 = ADC1_GetValue( &hadc1, ADC_CHANNEL_1 );
+	uint32_t adc_u32 = ADC1_GetValue( ADC_HANDLER, ADC_CHANNEL_LOCAL );
 	sprintf(DataChar,"%04d\ttim:%04d\tadc:%04d\r\n" , counter_i, (int)tim3_cnt_u32, (int)adc_u32) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 
-	max7219_print_value( &h1_max7219, counter_i+4000, counter_i+2000, 0 );
-	max7219_print_value( &h1_max7219, counter_i+3000, counter_i+1000, 4 );
+	max7219_print_value( &h1_max7219, adc_u32, tim3_cnt_u32, 0 );
+	max7219_print_value( &h1_max7219, tim3_cnt_u32, counter_i, 4 );
 
     /* USER CODE END WHILE */
 
