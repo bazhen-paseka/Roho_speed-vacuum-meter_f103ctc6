@@ -131,13 +131,9 @@ int main(void)
 		.cs_pin		= SPI1_CS_Pin
 	};
 
-	max7219_init4( &h1_max7219, DecodeForDigit_7_0, Intensity_13, DisplayDigit_0_7, NormalOperation);
-	max7219_init4( &h1_max7219, DecodeForDigit_7_0, Intensity_13, DisplayDigit_0_7, NormalOperation);
+	max7219_init4( &h1_max7219, WorkMode, DecodeForDigit_7_0, Intensity_13, DisplayDigit_0_7, NormalOperation);
+	max7219_print_value4 ( &h1_max7219, 1011, 2022, 3033, 4044 );
 
-	max7219_print_value( &h1_max7219, 4444, 2222, 0 );
-	max7219_print_value( &h1_max7219, 3333, 1111, 4 );
-
-	HAL_Delay(100);
 	//HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
 	//	speedometr 6im/oborot
@@ -154,8 +150,9 @@ int main(void)
 	sprintf(DataChar,"%04d\ttim:%04d\tadc:%04d\r\n" , counter_i, (int)tim3_cnt_u32, (int)adc_u32) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 
-	max7219_print_value( &h1_max7219, adc_u32, tim3_cnt_u32, 0 );
-	max7219_print_value( &h1_max7219, tim3_cnt_u32, counter_i, 4 );
+//	max7219_print_value( &h1_max7219, counter_i,	tim3_cnt_u32,	4 );
+//	max7219_print_value( &h1_max7219, tim3_cnt_u32, adc_u32,		0 );
+	max7219_print_value4 ( &h1_max7219, counter_i, tim3_cnt_u32, tim3_cnt_u32, adc_u32 );
 
     /* USER CODE END WHILE */
 
