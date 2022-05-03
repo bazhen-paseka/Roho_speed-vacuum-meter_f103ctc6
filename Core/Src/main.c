@@ -149,8 +149,6 @@ int main(void)
 	sprintf(DataChar,"%04d\ttim:%04d\tadc:%04d\r\n" , counter_i, (int)tim3_cnt_u32, (int)adc_u32) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 
-//	max7219_print_value( &h1_max7219, counter_i,	tim3_cnt_u32,	4 );
-//	max7219_print_value( &h1_max7219, tim3_cnt_u32, adc_u32,		0 );
 	max7219_print_value4 ( &h1_max7219, counter_i, tim3_cnt_u32, tim3_cnt_u32, adc_u32 );
 
     /* USER CODE END WHILE */
