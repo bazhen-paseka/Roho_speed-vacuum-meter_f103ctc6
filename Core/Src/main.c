@@ -30,7 +30,6 @@
 	#include <stdio.h>
 	#include <string.h>
 
-	//#include "tm1637_sm.h"
 	#include "adc_light_stm32f103_hal_sm.h"
 	#include "max7219_digit.h"
 
@@ -131,7 +130,8 @@ int main(void)
 		.cs_pin		= SPI1_CS_Pin
 	};
 
-	max7219_init( &h1_max7219 ) ;
+	//max7219_init( &h1_max7219 ) ;
+	max7219_init2( &h1_max7219, DecodeForDigit_7_0, Intensity_3, DisplayDigit_0_7, NormalOperation);
 	max7219_print_value( &h1_max7219, 20221431, 1 );
 
 	//HAL_TIM_Base_Start(&htim3);
@@ -149,6 +149,8 @@ int main(void)
 	uint32_t adc_u32 = ADC1_GetValue( &hadc1, ADC_CHANNEL_1 );
 	sprintf(DataChar,"%04d\ttim:%04d\tadc:%04d\r\n" , counter_i, (int)tim3_cnt_u32, (int)adc_u32) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
+
+	max7219_print_value( &h1_max7219, counter_i*10000 + adc_u32, 1 );
 
     /* USER CODE END WHILE */
 
