@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -29,8 +30,9 @@
 	#include <stdio.h>
 	#include <string.h>
 
-	#include "tm1637_sm.h"
+	//#include "tm1637_sm.h"
 	#include "adc_light_stm32f103_hal_sm.h"
+	#include "max7219_digit.h"
 
 /* USER CODE END Includes */
 
@@ -98,6 +100,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM3_Init();
   MX_ADC1_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
 	#define SOFT_VERSION 			100
@@ -121,33 +124,19 @@ int main(void)
 
 	int counter_i = 0;
 
+	max7219_struct h1_max7219 =
+	{
+		.spi		= &hspi1,
+		.cs_port	= SPI1_CS_GPIO_Port,
+		.cs_pin		= SPI1_CS_Pin
+	};
 
-	tm1637_struct h1_tm1637;
-	  h1_tm1637.clk_pin = GPIO_PIN_8;
-	  h1_tm1637.clk_port = GPIOB;
-	  h1_tm1637.dio_pin = GPIO_PIN_9;
-	  h1_tm1637.dio_port = GPIOB;
-		__HAL_RCC_GPIOB_CLK_ENABLE();
+	max7219_init( &h1_max7219 ) ;
+	max7219_print_value( &h1_max7219, 1426, 1 );
 
-	tm1637_struct h2_tm1637;
-	  h2_tm1637.clk_pin = GPIO_PIN_6;
-	  h2_tm1637.clk_port = GPIOB;
-	  h2_tm1637.dio_pin = GPIO_PIN_7;
-	  h2_tm1637.dio_port = GPIOB;
-	__HAL_RCC_GPIOB_CLK_ENABLE();
-
-	  tm1637_Init(&h1_tm1637);
-	  tm1637_Init(&h2_tm1637);
-
-	  tm1637_Set_Brightness(  &h1_tm1637, bright_45percent);
-	  tm1637_Display_Decimal( &h1_tm1637, 1235, 0);
-	  tm1637_Set_Brightness(  &h2_tm1637, bright_45percent);
-	  tm1637_Display_Decimal( &h2_tm1637, 6789, 0);
-
-		//HAL_TIM_Base_Start(&htim3);
-		HAL_TIM_Base_Start_IT(&htim3);
-
-		//	speedometr 6im/oborot
+	//HAL_TIM_Base_Start(&htim3);
+	HAL_TIM_Base_Start_IT(&htim3);
+	//	speedometr 6im/oborot
 
   /* USER CODE END 2 */
 
@@ -155,15 +144,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//	HAL_Delay(100);
-//	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 	HAL_Delay(500);
-//	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-
 	counter_i++;
 	uint32_t adc_u32 = ADC1_GetValue( &hadc1, ADC_CHANNEL_1 );
-	tm1637_Display_Decimal(&h1_tm1637, adc_u32, 0);
-	tm1637_Display_Decimal(&h2_tm1637, tim3_cnt_u32, 0);
 	sprintf(DataChar,"%04d\ttim:%04d\tadc:%04d\r\n" , counter_i, (int)tim3_cnt_u32, (int)adc_u32) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 
