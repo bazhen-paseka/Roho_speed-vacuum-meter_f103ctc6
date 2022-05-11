@@ -55,7 +55,10 @@
 
 /* USER CODE BEGIN PV */
 
-	uint32_t tim3_cnt_u32 = 6789;
+	uint8_t		time_to_update_flag	= 0 ;
+	uint32_t	taho_cnt_u32		= 0 ;
+	uint32_t	speed_cnt_u32		= 0 ;
+	int 		counter_i 			= 0 ;
 
 /* USER CODE END PV */
 
@@ -122,8 +125,6 @@ int main(void)
 			TIME_as_int_str ) ;
 	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 
-	int counter_i = 0;
-
 	max7219_struct h1_max7219 =
 	{
 		.spi		= &hspi1,
@@ -143,16 +144,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	HAL_Delay(700);
-	counter_i++;
-	uint32_t adc_u32 = ADC1_GetValue( ADC_HANDLER, ADC_CHANNEL_LOCAL );
-	sprintf(DataChar,"%04d\ttim:%04d\tadc:%04d\r\n" , counter_i, (int)tim3_cnt_u32, (int)adc_u32) ;
-	HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
+	if ( time_to_update_flag == 1 ) {
+		counter_i++;
+		uint32_t adc_u32 = ADC1_GetValue( ADC_HANDLER, ADC_CHANNEL_LOCAL );
+		sprintf(DataChar,"%04d\t taho:%04d\t speed:%04d\t adc:%04d\r\n" , counter_i, (int)taho_cnt_u32, (int)speed_cnt_u32, (int)adc_u32) ;
+		HAL_UART_Transmit( &huart1, (uint8_t *)DataChar , strlen(DataChar) , 100 ) ;
 
-	max7219_print_value4 ( &h1_max7219, counter_i, tim3_cnt_u32, tim3_cnt_u32, adc_u32 );
-
+		max7219_print_value4 ( &h1_max7219, counter_i, taho_cnt_u32, speed_cnt_u32, adc_u32 );
+		time_to_update_flag = 0;
+	}
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
