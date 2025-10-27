@@ -67,6 +67,7 @@ void Error_Handler(void);
 #define SPEED_SENSOR_EXTI_IRQn EXTI3_IRQn
 #define SPI1_CS_Pin GPIO_PIN_6
 #define SPI1_CS_GPIO_Port GPIOA
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
