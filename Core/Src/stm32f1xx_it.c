@@ -250,8 +250,8 @@ void TIM3_IRQHandler(void)
 	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 	taho_cnt_u32 		= taho_local_u32  ;
 	speed_cnt_u32 		= speed_local_u32 ;
-	taho_local_u32 		= 0	;
-	speed_local_u32 	= 0	;
+//	taho_local_u32 		= 0	;
+//	speed_local_u32 	= 0	;
 	time_to_update_flag	= 1 ;
 
   /* USER CODE END TIM3_IRQn 0 */
